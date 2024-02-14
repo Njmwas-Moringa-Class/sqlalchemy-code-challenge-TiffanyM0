@@ -22,6 +22,7 @@ class Restaurant(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String())
     price = Column(Integer)
+    star_rating = Column(Integer())
     reviews = relationship('Review', backref=backref('restaurant'))
 
     def __repr__(self):
@@ -33,6 +34,7 @@ class Customer(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String())
     last_name = Column(String())
+    reviews = relationship('Review', backref=backref('customer'))
 
     def __repr__(self):
         return f'Customer: {self.name}'
@@ -47,9 +49,9 @@ class Review(Base):
     customer_id = Column(Integer(), ForeignKey('customers.id'))
 
     def __repr__(self):
-        return f'Review: (id={self.id}, 
-            star_rating={self.star_rating}, 
-            restaurant_id={self.restaurant_id})'
+        return f'Review: (id={self.id},' +\
+            f'star_rating={self.star_rating},' +\
+            f'restaurant_id={self.restaurant_id})'
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
