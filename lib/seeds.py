@@ -13,9 +13,9 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
-    # session.query(Restaurant).delete()
-    # session.query(Review).delete()
-    # session.query(Customer).delete()
+    session.query(Restaurant).delete()
+    session.query(Review).delete()
+    session.query(Customer).delete()
 
 
     fake = Faker()
@@ -26,14 +26,13 @@ if __name__ == '__main__':
     for i in range(50):
         restaurant = Restaurant(
             name=fake.company(),
-            price=random.randint(5, 60),
+            price=random.randint(5, 600),
             star_rating=random.randint(0, 5)
         )
 
         # add and commit individually to get IDs back
         session.add(restaurant)
         session.commit()
-
         restaurants.append(restaurant)
 
     customers = []
@@ -50,9 +49,7 @@ if __name__ == '__main__':
 
 
     reviews = []
-    for restaurant in restaurants:
-        for i in range(random.randint(1,5)):
-            
+    for restaurant in restaurants:          
             review = Review(
                 star_rating=random.randint(0, 10),
                 comment=fake.sentence(),

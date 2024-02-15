@@ -39,6 +39,10 @@ class Restaurant(Base):
     reviews = relationship('Review', backref=backref('restaurant'))
     customers = relationship('Customer', secondary=restaurant_user, back_populates='restaurants')
 
+    @classmethod
+    def add_restaurant(cls, name, id):
+        pass
+
     def __repr__(self):
         return f'Restaurant: {self.name}'
 
@@ -53,7 +57,7 @@ class Customer(Base):
     restaurants = relationship('Restaurant', secondary=restaurant_user, back_populates='customers')
 
     def __repr__(self):
-        return f'Customer: {self.name}'
+        return f'Customer: {self.first_name}'
 
 
 class Review(Base):
@@ -65,8 +69,15 @@ class Review(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"))
     customer_id = Column(Integer(), ForeignKey('customers.id'))
 
+    restaurant = relationship('Restaurant', back_populates='reviews')
+    customer = relationship('customer', back_populates='reviews')
+
     def __repr__(self):
-        return f'star_rating={self.star_rating},'
+        return f'Review(restaurant_id={self.customer_id}, ' + \
+            f'customer_id={self.customer_id})'
+
+    # def __repr__(self):
+    #     return f'star_rating={self.star_rating},'
 
 
 if __name__ == '__main__':
