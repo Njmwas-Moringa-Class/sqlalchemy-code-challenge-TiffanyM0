@@ -36,17 +36,33 @@ if __name__ == '__main__':
 
         restaurants.append(restaurant)
 
+    customers = []
+    for restaurant in restaurants:
+        for i in range(random.randint(1,5)):
+            
+            customer = Customer(
+                
+            )
+            session.add(customer)
+            session.commit()
+            customers.append(customer)
+
+
     reviews = []
     for restaurant in restaurants:
         for i in range(random.randint(1,5)):
             
             review = Review(
-                score=random.randint(0, 10),
+                star_rating=random.randint(0, 10),
                 comment=fake.sentence(),
                 restaurant_id=restaurants.id,
+                customer_id=customers.id,
             )
+            session.add(review)
+            session.commit()
 
             reviews.append(review)
+
 
     session.bulk_save_objects(reviews)
     session.commit()
