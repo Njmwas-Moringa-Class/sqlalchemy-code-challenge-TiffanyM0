@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Restaurant, Review, Customer
 
 if __name__ == '__main__':
-    engine = create_engine('sqlite:///restaurants.db')
+    engine = create_engine('sqlite:///lib/db/restaurants.db')
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     restaurants = []
     for i in range(50):
         restaurant = Restaurant(
-            name=fake.unique.name(),
+            name=fake.company(),
             price=random.randint(5, 60),
             star_rating=random.randint(0, 5)
         )
@@ -37,15 +37,16 @@ if __name__ == '__main__':
         restaurants.append(restaurant)
 
     customers = []
-    for restaurant in restaurants:
-        for i in range(random.randint(1,5)):
-            
-            customer = Customer(
-                
-            )
-            session.add(customer)
-            session.commit()
-            customers.append(customer)
+    for i in range(50):
+                 
+        customer = Customer(
+            first_name=fake.unique.first_name(),
+            last_name=fake.unique.last_name(),
+        )
+        session.add(customer)
+        session.commit()
+
+        customers.append(customer)
 
 
     reviews = []
@@ -55,8 +56,8 @@ if __name__ == '__main__':
             review = Review(
                 star_rating=random.randint(0, 10),
                 comment=fake.sentence(),
-                restaurant_id=restaurants.id,
-                customer_id=customers.id,
+                # restaurant_id=restaurants.id,
+                # customer_id=customers.id,
             )
             session.add(review)
             session.commit()
