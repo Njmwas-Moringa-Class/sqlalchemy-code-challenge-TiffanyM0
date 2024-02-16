@@ -36,7 +36,7 @@ class Restaurant(Base):
     name = Column(String())
     price = Column(Integer)
     star_rating = Column(Integer())
-    reviews = relationship('Review', backref=backref('restaurant'))
+    reviews = relationship('Review', backref=backref('restaurants'))
     customers = relationship('Customer', secondary=restaurant_user, back_populates='restaurants')
 
     @classmethod
@@ -45,6 +45,19 @@ class Restaurant(Base):
 
     def __repr__(self):
         return f'Restaurant: {self.name}'
+    
+    def get_reviews(self):
+        """
+        Returns a collection of all the reviews for the Restaurant.
+        """
+        return self.reviews
+
+    def get_customers(self):
+        """
+        Returns a collection of all the customers who reviewed the Restaurant.
+        """
+        return self.customers
+
 
 
 class Customer(Base):
@@ -53,11 +66,24 @@ class Customer(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String())
     last_name = Column(String())
-    reviews = relationship('Review', backref=backref('customer'))
+    reviews = relationship('Review', back_populates='customer')
     restaurants = relationship('Restaurant', secondary=restaurant_user, back_populates='customers')
 
     def __repr__(self):
         return f'Customer: {self.first_name}'
+    
+    def get_reviews(self):
+        """
+        Returns a collection of all the reviews that the Customer has left.
+        """
+        return self.reviews
+    
+    def get_restaurants(self):
+        """
+        Returns a collection of all the restaurants that the Customer has reviewed.
+        """
+        return self.restaurants
+
 
 
 class Review(Base):
@@ -70,7 +96,7 @@ class Review(Base):
     customer_id = Column(Integer(), ForeignKey('customers.id'))
 
     restaurant = relationship('Restaurant', back_populates='reviews')
-    customer = relationship('customer', back_populates='reviews')
+    customer = relationship('Customer', back_populates='reviews')
 
     def __repr__(self):
         return f'Review(restaurant_id={self.customer_id}, ' + \
@@ -78,6 +104,18 @@ class Review(Base):
 
     # def __repr__(self):
     #     return f'star_rating={self.star_rating},'
+    def get_customer(self):
+        """
+        Returns the Customer instance associated with this review.
+        """
+        return self.customer
+
+    def get_restaurant(self):
+        """
+        Returns the Restaurant instance associated with this review.
+        """
+        return self.restaurant
+    
 
 
 if __name__ == '__main__':

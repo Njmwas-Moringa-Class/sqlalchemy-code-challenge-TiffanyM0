@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     fake = Faker()
 
-    name = ['KFC', 'Burger King', 'Art-Caffe', 'Bwibo']
+    # name = ['KFC', 'Burger King', 'Art-Caffe', 'Bwibo']
     
     restaurants = []
     for i in range(50):
